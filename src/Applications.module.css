@@ -3,3 +3,11 @@
   max-width: 1200px;
   margin: 0 auto;
 }
+
+.loadMoreButton {
+  margin-top: 20px;
+}
+
+.retryButton {
+  margin-top: 20px;
+}
