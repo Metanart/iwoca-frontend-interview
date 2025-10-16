@@ -12,16 +12,28 @@ const Applications = () => {
 
   console.log(applications, isLoading, error, hasNext, loadMore, refresh)
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   if (applications.length === 0) {
     return <div>No applications found</div>;
+  }
+
+  const renderLoadMoreButton = () => {
+    if (hasNext) {
+      return <Button className={styles.loadMoreButton} onClick={loadMore}>Load More</Button>
+    }
+
+    if (error) {
+      return <Button className={styles.loadMoreButton} onClick={refresh}>Retry</Button>
+    }
+
+    if (isLoading) {
+      return <Button className={styles.loadMoreButton}>Loading...</Button >
+    }
+
+    return null;
   }
 
   return (
@@ -36,8 +48,7 @@ const Applications = () => {
         })}
       </div>
 
-      {hasNext && <div className={styles.loadMoreButtonContainer}><Button className={styles.loadMoreButton} onClick={loadMore}>Load More</Button></div>}
-      {error && <div className={styles.loadMoreButtonContainer}><Button className={styles.retryButton} onClick={refresh}>Retry</Button></div>}
+      <div className={styles.loadMoreButtonContainer}>{renderLoadMoreButton()}</div>
     </div>
   );
 };
