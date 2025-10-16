@@ -21,16 +21,16 @@ const Applications = () => {
   }
 
   const renderLoadMoreButton = () => {
-    if (hasNext) {
-      return <Button className={styles.loadMoreButton} onClick={loadMore}>Load More</Button>
+    if (isLoading) {
+      return <Button className={styles.loadMoreButton}>Loading...</Button >
     }
 
     if (error) {
       return <Button className={styles.loadMoreButton} onClick={refresh}>Retry</Button>
     }
 
-    if (isLoading) {
-      return <Button className={styles.loadMoreButton}>Loading...</Button >
+    if (hasNext) {
+      return <Button className={styles.loadMoreButton} onClick={loadMore}>Load More</Button>
     }
 
     return null;
