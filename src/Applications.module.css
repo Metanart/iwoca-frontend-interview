@@ -11,3 +11,25 @@
 .retryButton {
   margin-top: 20px;
 }
+
+.applicationsList {
+  margin-bottom: 30px;
+}
+
+.applicationsListItem {
+  width: 100%;
+}
+
+.loadMoreButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.applicationsList + .loadMoreButtonContainer {
+  margin-bottom: 15px;
+}
+
+.applicationsListItem + .applicationsListItem {
+  margin-top: 30px;
+}

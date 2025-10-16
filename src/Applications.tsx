@@ -26,11 +26,18 @@ const Applications = () => {
 
   return (
     <div className={styles.Applications}>
-      {applications.map(application => {
-        return <SingleApplication key={application.id} application={application} />
-      })}
-      {hasNext && <Button className={styles.loadMoreButton} onClick={loadMore}>Load More</Button>}
-      {error && <Button className={styles.retryButton} onClick={refresh}>Retry</Button>}
+      <div className={styles.applicationsList}>
+        {applications.map(application => {
+          return (
+            <div className={styles.applicationsListItem} key={application.id}>
+              <SingleApplication application={application} />
+            </div>
+          )
+        })}
+      </div>
+
+      {hasNext && <div className={styles.loadMoreButtonContainer}><Button className={styles.loadMoreButton} onClick={loadMore}>Load More</Button></div>}
+      {error && <div className={styles.loadMoreButtonContainer}><Button className={styles.retryButton} onClick={refresh}>Retry</Button></div>}
     </div>
   );
 };

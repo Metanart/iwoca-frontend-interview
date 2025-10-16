@@ -55,23 +55,28 @@ const convertServerDtoForClient = (
 };
 
 const parsePaginationInfo = (
-  linkHeaderMetadata: string,
+  linkHeaderMetadata: string | null,
   page: number
 ): TPaginationInfo => {
   let pagination: TPaginationInfo = {
     currentPage: page,
     totalPages: 1,
     hasNext: false,
-    hasPrev: page > 1,
+    hasPrev: false,
   };
+
+  if (!linkHeaderMetadata) {
+    return pagination;
+  }
 
   const links = linkHeaderMetadata.split(",").map((link) => link.trim());
 
   const nextLink = links.find((link) => link.includes('rel="next"'));
-
+  const prevLink = links.find((link) => link.includes('rel="prev"'));
   const lastLink = links.find((link) => link.includes('rel="last"'));
 
   pagination.hasNext = !!nextLink;
+  pagination.hasPrev = !!prevLink;
 
   if (lastLink) {
     const lastPageMatch = lastLink.match(/_page=(\d+)/);
@@ -97,7 +102,15 @@ export const fetchApplications = async (
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch applications");
+      return {
+        applications: [],
+        pagination: {
+          currentPage: page,
+          totalPages: 1,
+          hasNext: false,
+          hasPrev: false,
+        },
+      };
     }
 
     const data = await response.json();
@@ -109,6 +122,14 @@ export const fetchApplications = async (
       pagination: parsePaginationInfo(linkHeaderMetadata, page),
     };
   } catch (error) {
-    throw new Error("Failed to fetch applications");
+    return {
+      applications: [],
+      pagination: {
+        currentPage: page,
+        totalPages: 1,
+        hasNext: false,
+        hasPrev: false,
+      },
+    };
   }
 };

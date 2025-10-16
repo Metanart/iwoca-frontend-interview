@@ -1,8 +1,8 @@
 .SingleApplication {
-  display: grid;
-  grid-template-columns: 15% 15% auto 15% 15% 15%;
   padding: 20px;
-
+  display: grid;
+  grid-template-columns: 1fr;
+  
   background-color: white;
   box-shadow: 0px 5px 16px 0px rgba(173, 200, 215, 0.25);
   border-radius: 10px;
@@ -10,6 +10,14 @@
 
   font-weight: 500;
   font-style: Medium;
+}
+
+.cell {
+  width: 100%;
+}
+
+.cell + .cell {
+  margin-top: 10px;
 }
 
 .cellCaption {
@@ -42,6 +50,20 @@
   margin-top: 4px;
 }
 
-.SingleApplication + .SingleApplication {
-  margin-top: 30px;
+@media screen and (min-width: 768px) {
+  .SingleApplication {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .SingleApplication {
+    grid-template-columns: 15% 15% minmax(0, 1fr) 15% 15% 15%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .SingleApplication {
+    grid-template-columns: 15% 15% minmax(0, 1fr) 15% 15% 15%;
+  }
 }
