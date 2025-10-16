@@ -2,14 +2,14 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   fetchApplications,
-  TApplication,
+  TApplicationClientDto,
   TPaginationInfo,
 } from "../api/fetchApplications";
 
 type TUseApplicationsResult = {
-  applications: TApplication[];
+  applications: TApplicationClientDto[];
   isLoading: boolean;
-  error: unknown;
+  error: string | null;
   currentPage: number;
   totalPages: number;
   hasNext: boolean;
@@ -22,7 +22,7 @@ export function useApplications(
   initialPage = 1,
   limit = 5
 ): TUseApplicationsResult {
-  const [applications, setApplications] = useState<TApplication[]>([]);
+  const [applications, setApplications] = useState<TApplicationClientDto[]>([]);
 
   const [pagination, setPagination] = useState<TPaginationInfo>({
     currentPage: initialPage,

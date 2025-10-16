@@ -1,4 +1,7 @@
-export type TApplication = {
+import { formatDate } from "./utils/formatDate";
+import { formatGbp } from "./utils/formatGbp";
+
+export type TApplicationServerDto = {
   id: number;
   first_name: string;
   last_name: string;
@@ -12,11 +15,43 @@ export type TApplication = {
   loan_history: any[];
 };
 
+export type TApplicationClientDto = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  loanAmount: string;
+  loanType: string;
+  email: string;
+  company: string;
+  dateCreated: string;
+  expiryDate: string;
+  avatar: string;
+  loanHistory: any[];
+};
+
 export type TPaginationInfo = {
   currentPage: number;
   totalPages: number;
   hasNext: boolean;
   hasPrev: boolean;
+};
+
+const convertServerDtoForClient = (
+  application: TApplicationServerDto
+): TApplicationClientDto => {
+  return {
+    id: application.id,
+    firstName: application.first_name,
+    lastName: application.last_name,
+    loanAmount: formatGbp(application.loan_amount),
+    loanType: application.loan_type,
+    email: application.email,
+    company: application.company,
+    dateCreated: formatDate(application.date_created),
+    expiryDate: formatDate(application.expiry_date),
+    avatar: application.avatar,
+    loanHistory: application.loan_history,
+  };
 };
 
 const parsePaginationInfo = (
@@ -53,7 +88,7 @@ export const fetchApplications = async (
   page: number = 1,
   limit: number = 5
 ): Promise<{
-  applications: TApplication[];
+  applications: TApplicationClientDto[];
   pagination: TPaginationInfo;
 }> => {
   try {
@@ -70,7 +105,7 @@ export const fetchApplications = async (
     const linkHeaderMetadata = response.headers.get("Link");
 
     return {
-      applications: data as TApplication[],
+      applications: data.map(convertServerDtoForClient),
       pagination: parsePaginationInfo(linkHeaderMetadata, page),
     };
   } catch (error) {
